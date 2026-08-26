@@ -1,0 +1,205 @@
+.todo-modal {
+    width: min(92vw, 430px);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.modal-header p {
+    margin: 6px 0 0;
+    color: #888;
+    font-size: 13px;
+}
+
+.form-section {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.todo-input {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 15px;
+    outline: none;
+}
+
+.todo-input:focus {
+    border-color: #222;
+}
+
+.choice-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.choice-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 10px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.choice-button strong {
+    font-size: 14px;
+}
+
+.choice-button small {
+    color: #999;
+    font-size: 11px;
+}
+
+.choice-button.selected {
+    border-color: #222;
+    background: #f7f7f7;
+}
+
+.option-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.option-card.selected {
+    border-color: #222;
+    background: #fafafa;
+}
+
+.option-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f1f1f1;
+    font-size: 16px;
+}
+
+.option-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.option-content strong {
+    font-size: 13px;
+}
+
+.option-content small {
+    color: #999;
+    font-size: 11px;
+}
+
+.option-check {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+.option-card.selected .option-check {
+    background: #222;
+    border-color: #222;
+    color: #fff;
+}
+
+.progress-setting {
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #f7f7f7;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.progress-range {
+    width: 100%;
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    color: #aaa;
+    font-size: 10px;
+}
+
+.modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.secondary-button,
+.primary-button {
+    height: 48px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.secondary-button {
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+.primary-button {
+    border: 0;
+    background: #222;
+    color: #fff;
+}
+
+.primary-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}

@@ -1,0 +1,68 @@
+.close-button {
+    border: 0;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+}
+
+.todo-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.todo-title {
+    flex: 1;
+}
+
+.todo-menu {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.more-button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #888;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.more-button:hover {
+    color: #222;
+}
+
+.todo-menu-popup {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    z-index: 10;
+    min-width: 80px;
+    padding: 4px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.delete-button {
+    width: 100%;
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    color: #e53935;
+    text-align: left;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background: #f7f7f7;
+}
