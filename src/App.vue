@@ -3,9 +3,11 @@ import {ref, computed} from 'vue'
 import {state, todayTodos, stamps, login, logout, addTodo, deleteTodo, toggleTodo, updateProgress, addReward, exchangeReward} from './stores/useStore'
 import BottomNav from './components/BottomNav.vue'
 import TodoAddModal from './views/TodoAddModal.vue'
+import TodoWeek from "./views/TodoWeek.vue";
 
-const tab = ref('today'), showAdd = ref(false), showReward = ref(false), showStamp = ref(false), showBirth = ref(false), selectedReward = ref(null), loginId = ref(''), birth = ref(''),
-    addForm = ref({title: '', type: 'today', special: false, progressEnabled: false, requiredProgress: 80}), rewardForm = ref({title: '', required: 5})
+const tab = ref('today'), showAdd = ref(false), showReward = ref(false), showStamp = ref(false), showBirth = ref(false), 
+    selectedReward = ref(null), loginId = ref(''), birth = ref(''),
+    rewardForm = ref({title: '', required: 5})
 const logged = computed(() => !!state.profile)
 
 function doLogin() {
@@ -17,8 +19,7 @@ function doLogin() {
 const openTodoMenu = ref(null)
 
 function toggleTodoMenu(id) {
-  openTodoMenu.value =
-      openTodoMenu.value === id ? null : id
+  openTodoMenu.value = openTodoMenu.value === id ? null : id
 }
 
 function removeTodo(todo) {
@@ -125,14 +126,10 @@ function logoutNow() {
         </div>
         <button class="add-button" @click="showAdd=true"><span>＋</span> 할 일 추가</button>
       </section>
-      
-      <section v-else-if="tab==='weekly'" class="page">
-        <div class="week-summary"><strong>이번 주도 잘하고 있어요!</strong><span>스탬프 {{ stamps }}개</span></div>
-        <div v-for="d in 7" :key="d" class="day-card">
-          <div class="day-name">{{ ['월', '화', '수', '목', '금', '토', '일'][d - 1] }}</div>
-          <div class="day-bar"><i :style="{width:(d===7?Math.min(100,todayTodos.filter(t=>t.completed).length/(todayTodos.length||1)*100):0)+'%'}"></i></div>
-          <span>{{ d === 7 ? todayTodos.filter(t => t.completed).length : 0 }} / {{ d === 7 ? todayTodos.length : 0 }}</span><span class="dot">{{ d === 7 && state.stamps.some(s => s.date === new Date().toISOString().slice(0, 10)) ? '★' : '' }}</span></div>
-      </section>
+<!--      v2 주간-->
+      <TodoWeek v-else-if="tab==='weekly'" class="page"/>
+
+<!--      보상-->
       <section v-else class="page">
         <div class="reward-balance">
           <div><small>현재 보유</small><strong>{{ stamps }}</strong><span>STAMP</span></div>
