@@ -40,13 +40,7 @@ const weekDays = computed(() => {
 })
 
 function todosForDate(dateKey) {
-  return state.todos.filter(todo => {
-    if (todo.date === dateKey) {return true}
-    if (todo.repeat === 'daily') {
-      return new Date(todo.date) <= new Date(dateKey)
-    }
-    return false
-  })
+    return state.todos.filter(todo => todo.date === dateKey)
 }
 
 function completedCount(dateKey) {
