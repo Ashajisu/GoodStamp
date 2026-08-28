@@ -1,8 +1,10 @@
 import { reactive, computed } from 'vue'
 
+const DATA_VERSION = 2
 const KEY = 'goodstamp-v1'
 
 const seed = () => ({
+    dataVersion: DATA_VERSION,
     profile: null,
     todos: [],
     stamps: [],
@@ -13,6 +15,18 @@ const seed = () => ({
     ],
     exchanges: []
 })
+
+function migrateState(saved) {
+    const version = saved.dataVersion || 1
+    const migrated = {
+        ...seed(),
+        ...saved
+    }
+    if (version < 2) {
+        migrated.dataVersion = 2
+    }
+    return migrated
+}
 
 let raw = localStorage.getItem(KEY)
 const state = reactive(raw ? JSON.parse(raw) : seed())
@@ -193,4 +207,4 @@ function logout() {
 cleanupOldTodos()
 createDailyTodosForToday()
 
-export {state,todayTodos,todayKey,stamps,login,logout,addTodo,updateTodo,deleteTodo,toggleTodo,updateProgress,addReward,updateReward,deleteReward,exchangeReward,save, weekStamps, usedStampCount, totalStampCount, getWeekMonday, cleanupOldTodos}
+export {state,todayTodos,todayKey,stamps,login,logout,addTodo,updateTodo,deleteTodo,toggleTodo,updateProgress,addReward,updateReward,deleteReward,exchangeReward,save, weekStamps, usedStampCount, totalStampCount, getWeekMonday, cleanupOldTodos, migrateState}

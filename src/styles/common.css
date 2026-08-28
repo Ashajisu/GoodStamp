@@ -66,3 +66,13 @@
 .delete-button:hover {
     background: #f7f7f7;
 }
+
+.login-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    color: #aaa;
+    font-size: 11px;
+}
