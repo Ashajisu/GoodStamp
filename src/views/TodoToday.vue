@@ -24,7 +24,7 @@ function openEdit(todo) {
 function closeEdit() {
     showEdit.value = false
     editingTodo.value = null
-}제
+}
 
 function createTodo(data) {
     addTodo(data)
