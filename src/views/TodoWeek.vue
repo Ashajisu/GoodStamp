@@ -7,7 +7,7 @@ const DAY_NAMES = ['월', '화', '수', '목', '금', '토', '일']
  * 스탬프 이미지 public/stamps/
  */
 const stampImages = [
-  '/stamps/stamp-1.png'
+  'stamps/stamp-1.png'
 ]
 
 /* 현재 스탬프 카드 페이지 */
@@ -128,7 +128,7 @@ function stampDate(dateKey) {
  * 페이지 전체에서 몇 번째 스탬프인지 기준으로 이미지 선택
  */
 function stampImage(index) {
-  return stampImages[index % stampImages.length]
+  return `${import.meta.env.BASE_URL}${stampImages[index % stampImages.length]}`
 }
 </script>
 
