@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from 'vue'
-import {state} from '../stores/useStore.js'
+import {state, weekStamps, getWeekMonday} from '../stores/useStore.js'
 const DAY_NAMES = ['월', '화', '수', '목', '금', '토', '일']
 
 /*
@@ -29,11 +29,7 @@ function todayKey() {
  */
 const weekDays = computed(() => {
   const today = new Date()
-  const currentDay = today.getDay()
-  const diff = currentDay === 0 ? -6 : 1 - currentDay
-  const monday = new Date(today)
-  monday.setDate(today.getDate() + diff)
-  monday.setHours(0, 0, 0, 0)
+  const monday = getWeekMonday(today)
 
   return Array.from({length: 7}, (_, index) => {
     const date = new Date(monday)
@@ -43,9 +39,6 @@ const weekDays = computed(() => {
   })
 })
 
-/* =========================
-   할 일
-   ========================= */
 function todosForDate(dateKey) {
   return state.todos.filter(todo => {
     if (todo.date === dateKey) {return true}
@@ -68,41 +61,15 @@ function completionRate(dateKey) {
   )
 }
 
-
-/* =========================
-   주간 스탬프
-   ========================= */
-
-/**
- * 이번 주에 획득한 스탬프
- */
-const weekStamps = computed(() => {
-  if (!weekDays.value.length) {return []}
-  const startDate = weekDays.value[0].key
-  const endDate = weekDays.value[6].key
-  return state.stamps
-      .filter(stamp => stamp.date >= startDate && stamp.date <= endDate)
-      .sort((a, b) => a.date.localeCompare(b.date))
-})
-
-/**
- * 9개 단위 페이지 수
- */
 const stampPageCount = computed(() =>
     Math.max(1, Math.ceil(weekStamps.value.length / 9))
 )
 
-/**
- * 현재 페이지의 스탬프
- */
 const currentStampPage = computed(() => {
   const start = stampPage.value * 9
   return weekStamps.value.slice(start, start + 9)
 })
 
-/**
- * 스탬프 페이지 이동
- */
 function prevStampPage() {
   if (stampPage.value > 0) {stampPage.value--}
 }
@@ -111,22 +78,12 @@ function nextStampPage() {
   if (stampPage.value < stampPageCount.value - 1) {stampPage.value++}
 }
 
-/**
- * 스탬프 날짜 표시
- *
- * 2026-08-27 → 8.27
- */
 function stampDate(dateKey) {
   const [, month, day] = dateKey.split('-')
 
   return `${Number(month)}.${Number(day)}`
 }
 
-/**
- * 스탬프 이미지
- *
- * 페이지 전체에서 몇 번째 스탬프인지 기준으로 이미지 선택
- */
 function stampImage(index) {
   return `${import.meta.env.BASE_URL}${stampImages[index % stampImages.length]}`
 }
