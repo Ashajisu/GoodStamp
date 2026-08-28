@@ -1,0 +1,98 @@
+.reward-card {
+    position: relative;
+}
+
+.reward-menu {
+    position: absolute;
+    top: 42px;
+    right: 12px;
+    z-index: 10;
+    min-width: 90px;
+    padding: 5px;
+    border: 1px solid #eee3da;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.reward-menu button {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    text-align: left;
+    color: #55483f;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.reward-menu button:hover {
+    background: #f8f3ee;
+}
+
+.reward-menu button.delete {
+    color: #d05d4f;
+}
+
+.history > h3 {
+    margin: 0 0 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.history-total {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.history-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 18px 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+}
+
+.history-card > div {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.history-card > [color="brown"] {
+    color: #8b5e3c;
+}
+
+.history-card > [color="khaki"] {
+    color: #817b4d;
+}
+
+.history-card h3 {
+    margin: 2px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: #777;
+}
+
+.history-card strong {
+    margin-top: 2px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #333;
+}

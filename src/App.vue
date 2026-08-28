@@ -1,13 +1,13 @@
 <script setup>
 import {ref, computed} from 'vue'
-import {state, todayTodos, stamps, login, logout, addTodo, deleteTodo, toggleTodo, updateProgress, addReward, exchangeReward} from './stores/useStore'
+import {state, todayTodos, stamps, login, logout, addTodo, deleteTodo, toggleTodo, updateProgress} from './stores/useStore'
 import BottomNav from './components/BottomNav.vue'
 import TodoAddModal from './views/TodoAddModal.vue'
 import TodoWeek from "./views/TodoWeek.vue";
+import TodoReward from "./views/TodoReward.vue";
 
-const tab = ref('today'), showAdd = ref(false), showReward = ref(false), showStamp = ref(false), showBirth = ref(false), 
-    selectedReward = ref(null), loginId = ref(''), birth = ref(''),
-    rewardForm = ref({title: '', required: 5})
+const tab = ref('today'), showAdd = ref(false), showStamp = ref(false), 
+    loginId = ref(''), birth = ref('')
 const logged = computed(() => !!state.profile)
 
 function doLogin() {
@@ -57,17 +57,6 @@ function complete(t) {
     showStamp.value = true;
     setTimeout(() => showStamp.value = false, 1200)
   }
-}
-
-function verify() {
-  if (!selectedReward.value) return;
-  if (birth.value === state.profile.birth) {
-    if (exchangeReward(selectedReward.value)) {
-      showBirth.value = false;
-      selectedReward.value = null;
-      alert('보상을 교환했어요!')
-    }
-  } else alert('생년월일이 일치하지 않아요.')
 }
 
 function logoutNow() {
@@ -129,44 +118,14 @@ function logoutNow() {
 <!--      v2 주간-->
       <TodoWeek v-else-if="tab==='weekly'" class="page"/>
 
-<!--      보상-->
-      <section v-else class="page">
-        <div class="reward-balance">
-          <div><small>현재 보유</small><strong>{{ stamps }}</strong><span>STAMP</span></div>
-          <div class="big-stamp">★</div>
-        </div>
-        <div class="section-title"><h2>나의 보상</h2>
-          <button class="text-btn" @click="showReward=true">+ 추가</button>
-        </div>
-        <div v-for="r in state.rewards" :key="r.id" class="reward-card">
-          <div class="reward-icon">🎁</div>
-          <div class="reward-main"><strong>{{ r.title }}</strong><small>{{ r.required }} 스탬프 필요</small></div>
-          <button class="exchange" :disabled="stamps<r.required" @click="selectedReward=r;showBirth=true">교환</button>
-        </div>
-        <div v-if="state.exchanges.length" class="history"><h3>교환 기록</h3>
-          <p v-for="e in [...state.exchanges].reverse()" :key="e.id">{{ e.date }} · {{ e.title }} · -{{ e.count }}개</p></div>
-      </section>
+<!--      v2 보상-->
+      <TodoReward v-else class="page"/>
+
       <BottomNav :tab="tab" @change="tab=$event"/>
     </template>
 
     <!--    v2 할 일 추가-->
-    <TodoAddModal v-if="showAdd" @close="showAdd = false" @submit="createTodo"
-    />
-    <div v-if="showReward" class="modal-backdrop" @click.self="showReward=false">
-      <div class="modal"><h2>보상 추가</h2><input v-model="rewardForm.title" placeholder="보상 이름"/><input v-model.number="rewardForm.required" type="number" min="1" placeholder="필요 스탬프"/>
-        <button class="primary" @click="addReward(rewardForm.title,rewardForm.required);showReward=false;rewardForm={title:'',required:5}">추가하기</button>
-      </div>
-    </div>
-    
-    <div v-if="showBirth" class="modal-backdrop">
-      <div class="modal center">
-        <div class="stamp-icon">★</div>
-        <h2>생년월일 확인</h2>
-        <p>보상을 교환하려면 생년월일을 입력해주세요.</p><input v-model="birth" inputmode="numeric" maxlength="6" placeholder="YYMMDD"/>
-        <button class="primary" @click="verify">교환하기</button>
-        <button class="cancel" @click="showBirth=false">취소</button>
-      </div>
-    </div>
+    <TodoAddModal v-if="showAdd" @close="showAdd = false" @submit="createTodo"/>
     
     <div v-if="showStamp" class="stamp-overlay">
       <div class="stamp-pop">참 잘했어요!</div>
