@@ -74,8 +74,7 @@ function addTodo(data) {
         id: Date.now(),
         date: todayKey(),
         title: data.title,
-        type: data.type || 'today',
-        repeat: data.type === 'daily' ? 'daily' : 'none',
+        repeat: data.repeat === 'daily' ? 'daily' : 'today',
         special: !!data.special,
         progressEnabled: !!data.progressEnabled,
         progress: 0,
@@ -94,8 +93,7 @@ function updateTodo(todoId, data) {
     if (!todo) {return false}
     
     todo.title = data.title
-    todo.type = data.type || 'today'
-    todo.repeat = data.type === 'daily' ? 'daily' : 'none'
+    toto.repeat = data.repeat === 'daily' ? 'daily' : 'today',
     todo.special = !!data.special
     todo.progressEnabled = !!data.progressEnabled
     todo.requiredProgress = data.progressEnabled ? (data.requiredProgress || 80) : 100
