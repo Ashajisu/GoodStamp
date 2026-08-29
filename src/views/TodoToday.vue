@@ -67,7 +67,7 @@ function complete(t) {
                     <div class="todo-menu">
                         <button type="button" class="more-button" @click.stop="toggleTodoMenu(t.id)">⋮</button>
 
-                        <div v-if="openTodoMenu === t.id" class="todo-menu-popup">
+                        <div v-if="openTodoMenu === t.id" class="todo-menu-popup today-menu">
                             <button type="button" @click.stop="openEdit(t)">수정</button>
                             <button type="button" class="delete-button" @click.stop="removeTodo(t)">삭제</button>
                         </div>
