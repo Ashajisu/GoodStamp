@@ -93,7 +93,7 @@ function updateTodo(todoId, data) {
     if (!todo) {return false}
     
     todo.title = data.title
-    toto.repeat = data.repeat === 'daily' ? 'daily' : 'today',
+    todo.repeat = data.repeat === 'daily' ? 'daily' : 'today'
     todo.special = !!data.special
     todo.progressEnabled = !!data.progressEnabled
     todo.requiredProgress = data.progressEnabled ? (data.requiredProgress || 80) : 100
