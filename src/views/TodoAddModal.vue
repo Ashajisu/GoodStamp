@@ -3,12 +3,18 @@ import { reactive } from 'vue'
 
 const emit = defineEmits(['close', 'submit'])
 
+const props = defineProps({
+    todo: {
+        type: Object,
+        default: null
+    }
+})
 const addForm = reactive({
-  title: '',
-  repeat: 'today',
-  special: false,
-  progressEnabled: false,
-  requiredProgress: 80
+    title: props.todo?.title ?? '',
+    repeat: props.todo?.repeat ?? 'today',
+    special: props.todo?.special ?? false,
+    progressEnabled: props.todo?.progressEnabled ?? false,
+    requiredProgress: props.todo?.requiredProgress ?? 80
 })
 
 function toggleProgress() {
