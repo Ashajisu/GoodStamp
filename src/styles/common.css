@@ -51,6 +51,39 @@
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
+.today-menu {
+    position: absolute;
+    top: 42px;
+    right: 12px;
+    z-index: 10;
+    min-width: 90px;
+    padding: 5px;
+    border: 1px solid #eee3da;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.today-menu button {
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    text-align: left;
+    color: #55483f;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.today-menu button:hover {
+    background: #f8f3ee;
+}
+
+.today-menu button.delete {
+    color: #d05d4f;
+}
 
 .delete-button {
     width: 100%;
