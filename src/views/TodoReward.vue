@@ -1,10 +1,11 @@
 <script setup>
 import {ref} from 'vue'
-import {addReward, updateReward, deleteReward, exchangeReward, stamps, state, usedStampCount, totalStampCount} from '../stores/useStore.js'
+import {addReward, updateReward, deleteReward, exchangeReward, stamps, state, usedStampCount, totalStampCount, exportBackup, importBackup, restoreFromBackup} from '../stores/useStore.js'
 
 const showReward = ref(false), showBirth = ref(false), birth = ref(''),
-    selectedReward = ref(null), editingReward = ref(null), openMenu = ref(null), 
-    rewardForm = ref({title: '', required: 5})
+    selectedReward = ref(null), editingReward = ref(null), openMenu = ref(null),
+    rewardForm = ref({title: '', required: 5}), showBackup = ref(false),
+    backupText = ref(''), importMode = ref('file')
 
 function openAddReward() {
   editingReward.value = null
@@ -66,6 +67,71 @@ function verify() {
     }
   } else alert('생년월일이 일치하지 않아요.')
 }
+
+function handleExportBackup() {
+  const backup = exportBackup()
+
+  // 모바일/PWA 환경 감지: 터치 디바이스이거나 화면이 작으면 클립보드 우선
+  const isMobile = 'ontouchstart' in window || window.innerWidth < 768
+
+  if (isMobile) {
+    // 클립보드에 복사
+    navigator.clipboard.writeText(backup).then(() => {
+      alert('백업 데이터가 클립보드에 복사되었습니다.\n메모장 등에 붙여넣어 저장하세요.')
+    }).catch(() => {
+      // 클립보드 실패 시 파일 다운로드 시도
+      fallbackDownload(backup)
+    })
+  } else {
+    // 데스크톱: 파일 다운로드
+    fallbackDownload(backup)
+  }
+}
+
+function fallbackDownload(backup) {
+  const blob = new Blob([backup], {type: 'application/json'})
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `goodstamp-backup-${new Date().toISOString().split('T')[0]}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+  alert('백업 파일이 다운로드되었습니다.')
+}
+
+function handleImportBackup(event) {
+  const file = event.target.files[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const data = importBackup(e.target.result)
+    if (data) {
+      if (confirm('백업을 복구하면 현재 데이터가 덮어씌워집니다. 계속하시겠습니까?')) {
+        restoreFromBackup(data)
+        alert('백업 복구가 완료되었습니다.')
+        showBackup.value = false
+      }
+    } else {
+      alert('유효하지 않은 백업 파일입니다.')
+    }
+  }
+  reader.readAsText(file)
+  event.target.value = ''
+}
+
+function handleImportFromText() {
+  const data = importBackup(backupText.value)
+  if (data) {
+    if (confirm('백업을 복구하면 현재 데이터가 덮어씌워집니다. 계속하시겠습니까?')) {
+      restoreFromBackup(data)
+      alert('백업 복구가 완료되었습니다.')
+      showBackup.value = false
+      backupText.value = ''
+    }
+  } else {
+    alert('유효하지 않은 백업 데이터입니다.')
+  }
+}
 </script>
 
 <template>
@@ -109,7 +175,35 @@ function verify() {
       <h3>교환 기록</h3>
       <p v-for="e in [...state.exchanges].reverse()" :key="e.id">{{ e.date }} · {{ e.title }} · -{{ e.count }}개</p>
     </div>
-  
+
+    <div class="backup-section">
+      <button class="text-btn" @click="handleExportBackup">📥 백업 내보내기</button>
+      <button class="text-btn" @click="showBackup=true">📤 백업 가져오기</button>
+    </div>
+
+    <div v-if="showBackup" class="modal-backdrop" @click.self="showBackup=false">
+      <div class="modal">
+        <h2>백업 가져오기</h2>
+        <p>백업을 복구하면 현재 데이터가 덮어씌워집니다.</p>
+
+        <div class="import-tabs">
+          <button :class="{active: importMode==='file'}" @click="importMode='file'">파일 선택</button>
+          <button :class="{active: importMode==='text'}" @click="importMode='text'">텍스트 붙여넣기</button>
+        </div>
+
+        <div v-if="importMode==='file'" class="import-file">
+          <input type="file" accept=".json" @change="handleImportBackup"/>
+        </div>
+
+        <div v-if="importMode==='text'" class="import-text">
+          <textarea v-model="backupText" placeholder="백업 JSON 데이터를 여기에 붙여넣으세요" rows="6"/>
+          <button class="primary" @click="handleImportFromText">복구하기</button>
+        </div>
+
+        <button class="cancel" @click="showBackup=false">취소</button>
+      </div>
+    </div>
+
     <div v-if="showReward" class="modal-backdrop" @click.self="showReward=false">
       <div class="modal">
         <h2>{{ editingReward ? '보상 수정' : '보상 추가' }}</h2>

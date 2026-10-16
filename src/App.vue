@@ -1,6 +1,6 @@
 <script setup>
 import {ref, computed} from 'vue'
-import {state, login, logout} from './stores/useStore'
+import {state, login, logout, syncStatusText, hasPendingChanges, manualSync} from './stores/useStore'
 import BottomNav from './components/BottomNav.vue'
 import TodoWeek from "./views/TodoWeek.vue";
 import TodoReward from "./views/TodoReward.vue";
@@ -9,17 +9,32 @@ import TodoToday from "./views/TodoToday.vue";
 const VERSION = '2.2'
 const tab = ref('today'), loginId = ref(''), birth = ref('')
 const logged = computed(() => !!state.profile)
+const showSyncStatus = computed(() => hasPendingChanges())
 
-function doLogin() {
+async function doLogin() {
     if (!loginId.value.trim() || !/^[0-9]{6}$/.test(birth.value)) return alert('아이디와 생년월일 6자리를 입력해주세요.');
-    login(loginId.value.trim(), birth.value)
+    try {
+        await login(loginId.value.trim(), birth.value)
+    } catch (error) {
+        alert(error.message || '로그인 실패')
+    }
 }
 
-function logoutNow() {
-    logout();
-    tab.value = 'today'
+async function logoutNow() {
+    try {
+        await logout();
+        tab.value = 'today'
+    } catch (error) {
+        console.error('Logout error:', error)
+        tab.value = 'today'
+    }
 }
 </script>
+
+<style>
+@import './styles/sync.css';
+</style>
+
 <template>
     <main class="app-shell">
         <section v-if="!logged" class="login-screen">
@@ -40,6 +55,12 @@ function logoutNow() {
                     <h1>{{ tab === 'today' ? '오늘의 할일' : tab === 'weekly' ? '주간 리스트' : '보상 리스트' }}</h1></div>
                 <button class="avatar" @click="logoutNow">{{ state.profile.id.slice(0, 1).toUpperCase() }}</button>
             </header>
+
+            <!-- 동기화 상태 표시 -->
+            <div v-if="showSyncStatus" class="sync-status-bar">
+                <span>{{ syncStatusText }}</span>
+                <button class="sync-btn" @click="manualSync">동기화</button>
+            </div>
 
             <!--      v2 오늘 화면-->
             <TodoToday v-if="tab==='today'" class="page"/>

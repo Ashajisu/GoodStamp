@@ -96,3 +96,83 @@
     line-height: 1.2;
     color: #333;
 }
+
+.backup-section {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+}
+
+.backup-section .text-btn {
+    flex: 1;
+    padding: 12px;
+    background: #f8f3ee;
+    border: 0;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #55483f;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.backup-section .text-btn:hover {
+    background: #efe9e2;
+}
+
+.import-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.import-tabs button {
+    flex: 1;
+    padding: 10px;
+    background: #f8f3ee;
+    border: 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #55483f;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.import-tabs button.active {
+    background: #55483f;
+    color: #fff;
+}
+
+.import-file input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+}
+
+.import-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.import-text textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    font-family: monospace;
+    font-size: 12px;
+    resize: vertical;
+}
+
+.import-text button {
+    width: 100%;
+}
